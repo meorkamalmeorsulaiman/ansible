@@ -1,0 +1,17 @@
+---
+- name: install start and enable httpd
+  hosts: hap
+  tasks:
+  - name: Install web package
+    yum:
+      name: httpd
+      state: removed
+
+- name: Test removed web service
+  hosts: localhost
+  tasks:
+  - name: Test Listening port
+    shell:
+      cmd: 
+        - nc -vz hap01.lab.rumah.lan 80
+        - nc -vz hap02.lab.rumah.lan 80

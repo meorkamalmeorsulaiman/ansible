@@ -41,7 +41,7 @@
       enabled: yes
 ```
 
-## Example of playbook
+## Play the playbook
 
 - the example playbook `learning-1/httpd.yml` installed httpd on one of the target host `hap01`
 - Use `ansible-playbook` command to execute the playbook `ansible-playbook learning-1/httpd.yml --ask-pass`

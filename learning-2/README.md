@@ -70,3 +70,5 @@ kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-2/installpackages.yml
 playbook: learning-2/installpackages.yml
 kamal@TS-Kamal:~/github/ansible$ 
 ```
+
+## YAML Strings

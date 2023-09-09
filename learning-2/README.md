@@ -32,6 +32,8 @@
      service: name=httpd enabled=true
 ```
 
+## Verify syntax
+
 - Validate the syntax with `ansible-playbook --syntax-check learning-2/deployhttpd.yml`
 
 ```shell

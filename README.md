@@ -7,11 +7,10 @@ This is the place for my ansible notes
 
 ## Initial Test
 
-`ansible -m ping -i inventory.yml all --ask-pass -v`
+`ansible -m ping -i inventory.yml all --ask-pass`
 
 ```
 kamal@TS-Kamal:~/github/ansible$ ansible -i inventory.yml all -m ping --ask-pass -v
-Using /home/kamal/github/ansible/ansible.ini as config file
 SSH password: 
 BECOME password[defaults to SSH password]: 
 hap01.lab.rumah.lan | SUCCESS => {

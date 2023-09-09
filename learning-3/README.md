@@ -107,3 +107,34 @@ hap01.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    s
 hap02.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 localhost                  : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0  
 ```
+
+- Remove all the installed service `ansible-playbook learning-3/delDeployedWebService.yml --ask-pass`
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-3/delDeployedWebService.yml --ask-pass
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [install start and enable httpd] ****************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [Install web package] ***************************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+PLAY [Test removed web service] **********************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Test Listening port] ***************************************************************************************************************************************************************************
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": "['nc -vz hap01.lab.rumah.lan 80', 'nc -vz hap02.lab.rumah.lan 80']", "delta": "0:00:00.002035", "end": "2023-09-10 00:39:54.079688", "msg": "non-zero return code", "rc": 127, "start": "2023-09-10 00:39:54.077653", "stderr": "/bin/sh: 1: [nc -vz hap01.lab.rumah.lan 80,: not found", "stderr_lines": ["/bin/sh: 1: [nc -vz hap01.lab.rumah.lan 80,: not found"], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+hap02.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+localhost                  : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0 
+```

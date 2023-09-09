@@ -43,7 +43,3 @@ hap02.lab.rumah.lan | SUCCESS => {
     "ping": "pong"
 }
 ```
-
-
-## Test the playbook
-

@@ -104,7 +104,8 @@ kamal@TS-Kamal:~/github/ansible$
      when: my_answer in supported_packages
 ```
 
-Example - Test multiple condition:
+- Example - Test multiple condition:
+- Testing our multiple condition, you can use `and` or `or`
 
 ```yaml
 ---
@@ -115,4 +116,21 @@ Example - Test multiple condition:
     debug:
       msg: using CentOS 8
     when: ansible_facts['distribution_version'] == "8" and ansible_facts['distribution'] == "CentOS"
+```
+
+- Example - combining loop and condition:
+- The variable/facts `['mounts']` got many mountpoint
+- So you loop it and catches `/boot` then you compare and if it is larger than 100MB
+
+```yaml
+---
+- name: conditionals test
+  hosts: hap
+  tasks:
+  - name: Update kernal if sufficient space is available in /boot more than 100MB
+    package:
+      name: kernel
+      state: latest
+    loop: "{{ ansible_facts['mounts'] }}"
+    when: item.mount == "/boot" and item.size_available > 100000000
 ```

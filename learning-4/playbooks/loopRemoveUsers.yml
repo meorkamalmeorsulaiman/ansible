@@ -1,0 +1,10 @@
+---
+- name: Removing users
+  hosts: hap01
+  vars_files: ../vars/users
+  tasks:
+  - name: create users
+    user:
+      name: "{{ item.username }}"
+      state: absent
+    loop: "{{ users }}"

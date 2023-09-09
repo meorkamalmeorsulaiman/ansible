@@ -167,3 +167,5 @@ hap01.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=0    s
 
 kamal@TS-Kamal:~/github/ansible$ 
 ```
+
+- Remove the users created using `ansible-playbook learning-4/playbooks/loopRemoveUsers.yml --ask-pass -C`

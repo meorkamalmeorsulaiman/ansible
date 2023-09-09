@@ -83,3 +83,30 @@ Line of string
 
 - Two ways to use strings in yaml by using `|` to take over all newline
 - You can use `>` for splitting text over multiple line
+
+## Dry Run
+
+- Using dry run, ansible will show the changes without applying the change
+- Use `-C` option to perform dry run on `ansible-playbook`
+- Execute the dry run `ansible-playbook -C learning-2/deployhttpd.yml --ask-pass`
+
+```shell
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook -C learning-2/deployhttpd.yml --ask-pass
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [deploy httpd] **********************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+
+TASK [install httpd] *********************************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+
+TASK [enable httpd] **********************************************************************************************************************************************************************************
+fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": false, "msg": "Could not find the requested service httpd: host"}
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0  
+```
+

@@ -134,3 +134,47 @@ kamal@TS-Kamal:~/github/ansible$
     loop: "{{ ansible_facts['mounts'] }}"
     when: item.mount == "/boot" and item.size_available > 100000000
 ```
+
+## Handlers
+
+- Handlers is like exception
+- Let say if the 1st tasks failed then you don't want to run 2nd task but proceed with 3rd task
+- You can use handler at the level you want - `notify` statement
+- `notify` statement should list the name of the handler that is to be executed, and the handler listed at the end of the play
+- Handle only trigger if the task triggered a **changed** status
+- Exmple below - if the `copy nothing - intended to fail` failed then the handler - `restart_web` will skipped
+- The `copy index.html` task must trigger a **changed** status to kick in the handler `restart_web`
+
+```yaml
+---
+- name: create file on localhost
+  hosts: localhost
+  tasks:
+  - name: create index.html on localhost
+    copy:
+      content: "welcome to the webserver"
+      dest: /tmp/index.html
+
+- name: set up web server
+  hosts: hap
+  tasks:
+  - name: install httpd
+    yum:
+      name: httpd
+      state: latest
+  - name: copy index.html
+    copy:
+      src: /tmp/index.html
+      dest: /var/www/html/index.html
+    notify:
+      - restart_web
+  - name: copy nothing - intended to fail
+    copy:
+      src: /tmp/nothing
+      dest: /var/www/html/nothing.html
+  handlers:
+    - name: restart_web
+      service:
+        name: httpd
+        state: restarted
+```

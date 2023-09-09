@@ -3,7 +3,7 @@
 - Googled - it's a human-readable data serialization language
 - Often used of writing configuration files
 
-## Identation
+## Indentation
 
 - Indent identify relations between parts of the config
 - Rule of thumb you must use space and not tabs
@@ -109,4 +109,3 @@ fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": false, "msg": "Could not fi
 PLAY RECAP *******************************************************************************************************************************************************************************************
 hap01.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0  
 ```
-

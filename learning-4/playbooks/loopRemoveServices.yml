@@ -1,0 +1,14 @@
+---
+- name: Services services
+  hosts: hap
+  vars:
+   services:
+    - keepalived
+    - httpd
+  tasks:
+   - name: install packages
+     yum:
+      name:
+       - keepalived
+       - httpd 
+      state: absent

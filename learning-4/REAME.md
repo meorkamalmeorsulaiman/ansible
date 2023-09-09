@@ -123,6 +123,8 @@ hap01.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    s
 hap02.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
+- Execute playbook to remove the services `ansible-playbook learning-4/playbooks/loopRemoveServices.yml --ask-pass`
+
 ## Loop with Multivalued Variables
 
 - Item can be a simple list, it can also represent multiple variable.
@@ -169,3 +171,8 @@ kamal@TS-Kamal:~/github/ansible$
 ```
 
 - Remove the users created using `ansible-playbook learning-4/playbooks/loopRemoveUsers.yml --ask-pass -C`
+- Earlier version of Ansible, you can use `with_keyword` instead of `loop`
+  - There are severals options:
+    - `with_items` - Used like `loop`
+    - `with_file` - Used to iterate over a list of filenames
+    - `with_sequence` - Used to generate a list of values based on numeric sequence

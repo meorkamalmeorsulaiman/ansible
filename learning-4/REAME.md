@@ -58,3 +58,8 @@ hap02.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    s
 
 kamal@TS-Kamal:~/github/ansible$ 
 ```
+
+- Above, the `yum` module supports YAML list
+- While the `service` module we use loop
+- When using list, you need to check whether the module support list
+- If it doesn't supported then use loop with `{{ item }}` as the value/variable to the key

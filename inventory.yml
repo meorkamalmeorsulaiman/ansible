@@ -1,2 +1,13 @@
-[kamalopis]
-10.240.39.119
+[hap]
+hap01.lab.rumah.lan
+hap02.lab.rumah.lan
+
+[hapnodns]
+192.168.100.221
+192.168.100.222
+
+[hap01]
+hap01.lab.rumah.lan
+
+[hap02]
+hap02.lab.rumah.lan

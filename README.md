@@ -1,6 +1,9 @@
 # ansible
 This is the place for my ansible notes
 
+## Set environment variable
+
+`export ANSIBLE_CONFIG=./ansible.ini`
 
 ## Initial Test
 

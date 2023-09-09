@@ -41,3 +41,32 @@ kamal@TS-Kamal:~/github/ansible$ ansible-playbook --syntax-check learning-2/depl
 
 playbook: learning-2/deployhttpd.yml
 ```
+
+## YAML Lists
+
+- Key can have one or multiple value
+- When you use a module like `yum`, you can list packages name to a key
+- Example:
+
+```yaml
+---
+- name: using lists
+  hosts: hap
+  tasks:
+  - name: install packages
+    yum:
+     name:
+     - nmap
+     - httpd
+     - keepalived
+     state: latest
+```
+
+- Validate the syntax is correct `ansible-playbook learning-2/installpackages.yml --syntax-check`
+
+```shell
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-2/installpackages.yml --syntax-check
+
+playbook: learning-2/installpackages.yml
+kamal@TS-Kamal:~/github/ansible$ 
+```

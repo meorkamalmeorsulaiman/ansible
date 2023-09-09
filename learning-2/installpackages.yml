@@ -1,0 +1,11 @@
+---
+- name: using lists
+  hosts: hap
+  tasks:
+  - name: install packages
+    yum:
+     name:
+     - nmap
+     - httpd
+     - keepalived
+     state: latest

@@ -1,0 +1,8 @@
+- name: deploy httpd
+  hosts: hap01
+  tasks:
+   - name: install httpd
+     yum: name=httpd
+   
+   - name: enable httpd
+     service: name=httpd enabled=true

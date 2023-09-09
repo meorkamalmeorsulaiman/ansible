@@ -22,6 +22,25 @@
   - Item that are child and another element are indented more that the parent
   - Indentation created using space
 
+- Sample of playbook `httpd.yml`
+
+```yaml
+---
+- name: install start and enable httpd
+  hosts: hap01
+  tasks:
+   - name: install package
+     yum:
+      name: httpd
+      state: installed
+
+   - name: start and enable service
+     service:
+      name: httpd
+      state: started
+      enabled: yes
+```
+
 ## Example of playbook
 
 - the example playbook `learning-1/httpd.yml` installed httpd on one of the target host `hap01`

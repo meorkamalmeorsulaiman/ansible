@@ -1,0 +1,21 @@
+---
+- name: install and start services
+  hosts: hap
+  vars:
+   services:
+    - keepalived
+    - httpd
+  tasks:
+   - name: install packages
+     yum:
+      name:
+       - keepalived
+       - httpd 
+      state: latest
+  
+   - name: start the services
+     service:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+     loop: "{{ services }}"

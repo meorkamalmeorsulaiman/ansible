@@ -1,0 +1,7 @@
+- name: check for existence of devices
+  hosts: hap
+  tasks:
+    - name: check if /dev/sda exists
+      debug:
+        msg: a disk device /dev/sda exists
+      when: ansible_facts['devices']['sda'] is defined

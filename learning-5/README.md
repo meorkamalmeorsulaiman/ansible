@@ -30,7 +30,7 @@
 - Notice when you `when`, the actual string should be double quote
 - Execute the playbook using `ansible-playbook learning-5/playbooks/conInstall.yml --ask-pass`
 
-```yaml
+```bash
 kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/conInstall.yml --ask-pass
 SSH password: 
 BECOME password[defaults to SSH password]: 
@@ -56,3 +56,30 @@ hap02.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=0    s
 kamal@TS-Kamal:~/github/ansible$ 
 ```
 
+## Conditional Test Statements
+
+- You also can use other conditional test statement.
+- Example of conditional test statement:
+  - Variable existence `is defined`
+  - Variable not exist `is not defined`
+  - Variable is true, 1 or yes - boolean `variable`
+  - Variable is false, 0 or no - boolean `not variable`
+  - Equal (string) `key == "value"`
+  - Equal (numerical) `key == value`
+  - Less then `key < value`
+  - Less than or equal to `key <= value`
+  - Not equal to `key != value`
+- When using the `when` statement, the curly brackeyts doesn't needed because items in a `when` statement are considered to be variable by default.
+- So, write like this `when: text == "TEST"` instead of `when: "{{ when }}" == "TEST"`
+- Example - check existence:
+
+```yaml
+---
+- name: check for existence of devices
+  hosts: all
+  tasks:
+    - name: check if /dev/sda exists
+      debug:
+        msg: a disk device /dev/sda exists
+      when: ansible_facts['devices']['sda'] is defined
+```

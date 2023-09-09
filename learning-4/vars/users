@@ -1,0 +1,13 @@
+users:
+  - username: user01
+    homedir: /home/user01
+    shell: /bin/bash
+    groups: wheel
+  - username: user02
+    homedir: /home/user02
+    shell: /bin/bash
+    groups: users
+  - username: user03
+    homedir: /home/user03
+    shell: /bin/bash
+    groups: users

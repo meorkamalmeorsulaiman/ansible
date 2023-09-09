@@ -29,10 +29,10 @@
       - keepalived
 ```
 
-- Execute the playbook `ansible-playbook learning-4/simpleLoop.yml --ask-pass`
+- Execute the playbook `ansible-playbook learning-4/playbooks/simpleLoop.yml --ask-pass`
 
 ```yaml
-kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-4/simpleLoop.yml --ask-pass
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-4/playbooks/simpleLoop.yml --ask-pass
 SSH password: 
 BECOME password[defaults to SSH password]: 
 
@@ -63,6 +63,7 @@ kamal@TS-Kamal:~/github/ansible$
 - While the `service` module we use loop
 - When using list, you need to check whether the module support list
 - If it doesn't supported then use loop with `{{ item }}` as the value/variable to the key
+- The `{{ item }}` is system internal variable
 
 ## Loop with variable
 
@@ -93,10 +94,11 @@ kamal@TS-Kamal:~/github/ansible$
      loop: "{{ services }}"
 ```
 
-- Execute the playbook using `ansible-playbook learning-4/loopWithVariable.yml --ask-pass`
+- Execute the playbook using `ansible-playbook learning-4/playbooks/loopWithVariable.yml --ask-pass`
+- The variable can also be include in `host/hostgroup`
 
 ```bash
-kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-4/loopWithVariable.yml --ask-pass 
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-4/playbooks/loopWithVariable.yml --ask-pass 
 SSH password: 
 BECOME password[defaults to SSH password]: 
 
@@ -119,4 +121,49 @@ changed: [hap01.lab.rumah.lan] => (item=httpd)
 PLAY RECAP *******************************************************************************************************************************************************************************************
 hap01.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 hap02.lab.rumah.lan        : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+
+## Loop with Multivalued Variables
+
+- Item can be a simple list, it can also represent multiple variable.
+- Example, a variable files lists or users:
+
+```yaml
+users:
+  - username: user01
+    homedir: /home/user01
+    shell: /bin/bash
+    groups: wheel
+  - username: user02
+    homedir: /home/user02
+    shell: /bin/bash
+    groups: users
+  - username: user03
+    homedir: /home/user03
+    shell: /bin/bash
+    groups: users
+```
+
+- The the playbook take the variable form the multivalue variable file.
+- Execute the playbook using `ansible-playbook learning-4/playbooks/loopWithMultiVar.yml --ask-pass`
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-4/playbooks/loopWithMultiVar.yml --ask-pass 
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [create users using a loop from a list] *********************************************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+
+TASK [create users] **********************************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan] => (item={'username': 'user01', 'homedir': '/home/user01', 'shell': '/bin/bash', 'groups': 'wheel'})
+changed: [hap01.lab.rumah.lan] => (item={'username': 'user02', 'homedir': '/home/user02', 'shell': '/bin/bash', 'groups': 'users'})
+changed: [hap01.lab.rumah.lan] => (item={'username': 'user03', 'homedir': '/home/user03', 'shell': '/bin/bash', 'groups': 'users'})
+
+PLAY RECAP *******************************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+kamal@TS-Kamal:~/github/ansible$ 
 ```

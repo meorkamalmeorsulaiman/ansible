@@ -83,3 +83,36 @@ kamal@TS-Kamal:~/github/ansible$
         msg: a disk device /dev/sda exists
       when: ansible_facts['devices']['sda'] is defined
 ```
+
+- Example - check occurence of variable in a list:
+
+```yaml
+---
+- name: test if variable is in another variables list
+  hosts: hap
+  vars_prompt:
+  - name: my_answer
+    prompt: which package do you want to install
+  vars:
+    supported_packages:
+      - httpd
+      - keepalived
+  tasks:
+   - name: Check requested packages allowed
+     debug:
+       msg: you are trying to install a supported package
+     when: my_answer in supported_packages
+```
+
+Example - Test multiple condition:
+
+```yaml
+---
+- name: Check distribution and it release
+  hosts: hap
+  tasks:
+  - name: showing output
+    debug:
+      msg: using CentOS 8
+    when: ansible_facts['distribution_version'] == "8" and ansible_facts['distribution'] == "CentOS"
+```

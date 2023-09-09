@@ -72,3 +72,14 @@ kamal@TS-Kamal:~/github/ansible$
 ```
 
 ## YAML Strings
+
+- You have multiple way to describe/notation stings in YAMl file:
+
+```
+Line of string
+"Line of string"
+'Line of string'
+```
+
+- Two ways to use strings in yaml by using `|` to take over all newline
+- You can use `>` for splitting text over multiple line

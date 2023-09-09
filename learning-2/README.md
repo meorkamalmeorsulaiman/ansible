@@ -20,7 +20,6 @@
 - Example:
 
 ```yaml
-
 ---
 - name: deploy httpd
   hosts: hap01
@@ -64,7 +63,7 @@ playbook: learning-2/deployhttpd.yml
 
 - Validate the syntax is correct `ansible-playbook learning-2/installpackages.yml --syntax-check`
 
-```shell
+```bash
 kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-2/installpackages.yml --syntax-check
 
 playbook: learning-2/installpackages.yml
@@ -75,7 +74,7 @@ kamal@TS-Kamal:~/github/ansible$
 
 - You have multiple way to describe/notation stings in YAMl file:
 
-```
+```txt
 Line of string
 "Line of string"
 'Line of string'
@@ -90,7 +89,7 @@ Line of string
 - Use `-C` option to perform dry run on `ansible-playbook`
 - Execute the dry run `ansible-playbook -C learning-2/deployhttpd.yml --ask-pass`
 
-```shell
+```bash
 kamal@TS-Kamal:~/github/ansible$ ansible-playbook -C learning-2/deployhttpd.yml --ask-pass
 SSH password: 
 BECOME password[defaults to SSH password]: 

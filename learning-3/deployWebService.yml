@@ -1,0 +1,23 @@
+---
+- name: install start and enable httpd
+  hosts: hap
+  tasks:
+  - name: Install web package
+    yum:
+      name: httpd
+      state: latest
+
+  - name: Start and enable web service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+- name: Test web accessibility
+  hosts: localhost
+  tasks:
+  - name: Test Web Service
+    uri:
+     url:
+      - http://hap01.lab.rumah.lan
+      - http://hap02.lab.rumah.lan

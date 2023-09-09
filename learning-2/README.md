@@ -31,3 +31,11 @@
    - name: enable httpd
      service: name=httpd enabled=true
 ```
+
+- Validate the syntax with `ansible-playbook --syntax-check learning-2/deployhttpd.yml`
+
+```shell
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook --syntax-check learning-2/deployhttpd.yml 
+
+playbook: learning-2/deployhttpd.yml
+```

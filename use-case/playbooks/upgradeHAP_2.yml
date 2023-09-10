@@ -1,0 +1,69 @@
+---
+- name: HAProxy Upgrades - Pre-Check
+  hosts: hap02
+  tasks:
+  - name: Configuration check with new version
+    command: haproxy -c -f /etc/haproxy/.
+    register: command_result
+    changed_when: false
+
+  - name: Configuration check with HAP 2.6.15
+    command: ~/haproxy-2.6.15/haproxy -c -f /etc/haproxy/.
+    register: command_result
+    changed_when: false
+
+  - name: Configuration check result version 2.6.15
+    debug:
+      var: command_result.stdout
+    failed_when: 
+      - "'ALERT' in command_result.stdout"
+
+- name: HAProxy Upgrades - Deploy
+  hosts: hap02
+  tasks:
+
+  - name: Stopping HAProxy Service
+    service:
+      name: haproxy
+      state: stopped
+
+  - name: Backup current HAP binary
+    copy:
+      src: /usr/sbin/haproxy 
+      dest: /tmp/haproxy-back
+      remote_src: yes
+
+  - name: Copy HAProxy new binary
+    copy:
+      src: ~/haproxy-2.6.15/haproxy 
+      dest: /usr/sbin/haproxy
+      remote_src: yes
+
+  - name: Validate new binary updated
+    command: haproxy -v
+    register: command_result
+
+  - name: Upgraded HAP version reuslt
+    debug:
+      var: command_result.stdout
+
+- name: HAProxy Upgrades - Post
+  hosts: hap02
+  tasks:
+
+  - name: Configuration check with current version
+    command: haproxy -c -f /etc/haproxy/.
+    register: command_result
+    changed_when: false
+  
+  - name: Configuration check result with new version
+    debug:
+      var: command_result.stdout
+    failed_when: 
+      - "'ALERT' in command_result.stdout"
+
+  - name: Starting HAProxy Service
+    service:
+      name: haproxy
+      state: restarted
+  

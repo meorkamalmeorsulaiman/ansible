@@ -1,0 +1,8 @@
+---
+- name: Check distribution and it release
+  hosts: hap
+  tasks:
+  - name: showing output
+    debug:
+      msg: using CentOS 8
+    when: ansible_facts['distribution_version'] == "8" and ansible_facts['distribution'] == "CentOS"

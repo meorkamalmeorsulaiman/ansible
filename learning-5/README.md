@@ -225,3 +225,41 @@ hap02.lab.rumah.lan        : ok=3    changed=1    unreachable=0    failed=0    s
 
 kamal@TS-Kamal:~/github/ansible$ 
 ```
+
+- The sample a bit odd, alternatively we can use `fail` module.
+- Execute the playbook using `ansible-playbook learning-5/playbooks/failedWhenFail.yml --ask-pass`
+- In a use case where you want to stop the remaining tasks, you have to remove the `ignore_errors: yes` from the playbook header.
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/failedWhenFail.yml --ask-pass 
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [demonstrating the fail module] *******************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap02.lab.rumah.lan]
+ok: [hap01.lab.rumah.lan]
+
+TASK [run a script] ************************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+TASK [report a failure] ********************************************************************************************************************************************************************
+fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": false, "msg": "the command has failed"}
+...ignoring
+fatal: [hap02.lab.rumah.lan]: FAILED! => {"changed": false, "msg": "the command has failed"}
+...ignoring
+
+TASK [see if we get here] ******************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "second task executed"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "second task executed"
+}
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+hap02.lab.rumah.lan        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+```

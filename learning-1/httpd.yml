@@ -1,14 +1,29 @@
 ---
 - name: install start and enable httpd
-  hosts: hap01
+  hosts: hap
   tasks:
    - name: install package
      yum:
-      name: httpd
+      name: 
+        - haproxy
+        - keepalived
+        - make
       state: installed
-
-   - name: start and enable service
+    
+   - name: stop firewalld
      service:
-      name: httpd
+      name: firewalld
+      state: stopped
+      enabled: no
+
+   - name: start and enable haproxy service
+     service:
+      name: haproxy 
+      state: started
+      enabled: yes
+
+   - name: start and enable keepalived service
+     service:
+      name: keepalived
       state: started
       enabled: yes

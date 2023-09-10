@@ -302,3 +302,191 @@ hap02.lab.rumah.lan        : ok=3    changed=0    unreachable=0    failed=0    s
 
 kamal@TS-Kamal:~/github/ansible$ 
 ```
+
+## Block
+
+- Use when you have a group of tasks to tie with `when` statement
+- In other word, you want to use condition for multiple task
+- You specify the `block:` statement in the top most task and nested the child task
+
+```yaml
+- name: simple block example
+  hosts: hap
+  tasks:
+   - name: setting up http
+     block:
+       - name: installing http
+         yum:
+           name: httpd
+           state: present
+       - name: restart httpd
+         service:
+           name: httpd
+           state: started
+     when: ansible_distribution == "Debian"
+```
+
+- Execute the playbook using `ansible-playbook learning-5/playbooks/block.yml --ask-pass`
+- The task will skipped as be running Centos, both tasks were not executed
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/block.yml --ask-pass
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [simple block example] ****************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [installing http] *********************************************************************************************************************************************************************
+skipping: [hap01.lab.rumah.lan]
+skipping: [hap02.lab.rumah.lan]
+
+TASK [restart httpd] ***********************************************************************************************************************************************************************
+skipping: [hap01.lab.rumah.lan]
+skipping: [hap02.lab.rumah.lan]
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+hap02.lab.rumah.lan        : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+kamal@TS-Kamal:~/github/ansible$ 
+```
+
+### Block rescue and always
+
+- In the block statement, you can also put some exception handling
+- You can use`rescue` where the following task will not be executed. However, when the a task success the `rescue` block will not be executed
+- You can use `always` where the following task will be run regardless success or failure
+- Example:
+
+```yaml
+---
+- name: using blocks
+  hosts: hap 
+  tasks:
+  - name: intended to be successful
+    block:
+    - name: remove a file
+      shell:
+        cmd: rm /var/www/html/index.html
+    - name: printing status
+      debug:
+        msg: block task was operated
+    rescue:
+    - name: create a file
+      shell:
+        cmd: touch /tmp/rescuefile
+    - name: printing rescue status
+      debug:
+        msg: rescue task was operated
+    always:
+     - name: always write a message to logs
+       shell:
+         cmd: logger hello
+     - name: always printing this message
+       debug:
+         msg: this message is always printed
+```
+
+- Execute the playbook using `ansible-playbook learning-5/playbooks/rescueAlways.yml --ask-pass`
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/rescueAlways.yml --ask-pass
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [using blocks] ************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [remove a file] ***********************************************************************************************************************************************************************
+fatal: [hap02.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": "rm /var/www/html/index.html", "delta": "0:00:00.002606", "end": "2023-09-10 17:15:28.809127", "msg": "non-zero return code", "rc": 1, "start": "2023-09-10 17:15:28.806521", "stderr": "rm: cannot remove '/var/www/html/index.html': No such file or directory", "stderr_lines": ["rm: cannot remove '/var/www/html/index.html': No such file or directory"], "stdout": "", "stdout_lines": []}
+fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": "rm /var/www/html/index.html", "delta": "0:00:00.002551", "end": "2023-09-10 17:15:29.395982", "msg": "non-zero return code", "rc": 1, "start": "2023-09-10 17:15:29.393431", "stderr": "rm: cannot remove '/var/www/html/index.html': No such file or directory", "stderr_lines": ["rm: cannot remove '/var/www/html/index.html': No such file or directory"], "stdout": "", "stdout_lines": []}
+
+TASK [create a file] ***********************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+TASK [printing rescue status] **************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "rescue task was operated"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "rescue task was operated"
+}
+
+TASK [always write a message to logs] ******************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+TASK [always printing this message] ********************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "this message is always printed"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "this message is always printed"
+}
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=0   
+hap02.lab.rumah.lan        : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=0   
+
+kamal@TS-Kamal:~/github/ansible$ 
+```
+
+- You can see that the `rescue` statement executed and the `always` statement also executed
+- At the time of execution, there were not directory for webservice
+- We can remove the `always` statement to see whether the message log task run or not
+- Execute the playbook using `ansible-playbook learning-5/playbooks/rescueOnly.yml --ask-pass`
+- The remaining task will be executed as the part of the `rescue` statement. Unless the removing filed is success. All of the remaining task will be skipped
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/rescueOnly.yml --ask-pass
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [using blocks] ************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap02.lab.rumah.lan]
+ok: [hap01.lab.rumah.lan]
+
+TASK [remove a file] ***********************************************************************************************************************************************************************
+fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": "rm /var/www/html/index.html", "delta": "0:00:00.002248", "end": "2023-09-10 17:20:35.369419", "msg": "non-zero return code", "rc": 1, "start": "2023-09-10 17:20:35.367171", "stderr": "rm: cannot remove '/var/www/html/index.html': No such file or directory", "stderr_lines": ["rm: cannot remove '/var/www/html/index.html': No such file or directory"], "stdout": "", "stdout_lines": []}
+fatal: [hap02.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": "rm /var/www/html/index.html", "delta": "0:00:00.002212", "end": "2023-09-10 17:20:34.781638", "msg": "non-zero return code", "rc": 1, "start": "2023-09-10 17:20:34.779426", "stderr": "rm: cannot remove '/var/www/html/index.html': No such file or directory", "stderr_lines": ["rm: cannot remove '/var/www/html/index.html': No such file or directory"], "stdout": "", "stdout_lines": []}
+
+TASK [create a file] ***********************************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+TASK [printing rescue status] **************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "rescue task was operated"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "rescue task was operated"
+}
+
+TASK [always write a message to logs] ******************************************************************************************************************************************************
+changed: [hap01.lab.rumah.lan]
+changed: [hap02.lab.rumah.lan]
+
+TASK [always printing this message] ********************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "this message is always printed"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "this message is always printed"
+}
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=0   
+hap02.lab.rumah.lan        : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=0   
+
+kamal@TS-Kamal:~/github/ansible$ 
+```

@@ -2,17 +2,21 @@
 - name: HAProxy Upgrades - Pre-Check
   hosts: hap02
   tasks:
-  - name: Configuration check with new version
+  - name: Configuration check with current version
     command: haproxy -c -f /etc/haproxy/.
     register: command_result
     changed_when: false
 
-  - name: Configuration check with HAP 2.6.15
+  - name: Configuration check result with current version
+    debug:
+      var: command_result.stdout
+
+  - name: Configuration check with HAProxy new binary
     command: ~/haproxy-2.6.15/haproxy -c -f /etc/haproxy/.
     register: command_result
     changed_when: false
 
-  - name: Configuration check result version 2.6.15
+  - name: Configuration check result with new firmware
     debug:
       var: command_result.stdout
     failed_when: 
@@ -42,6 +46,9 @@
   - name: Validate new binary updated
     command: haproxy -v
     register: command_result
+    changed_when: false
+    failed_when: 
+      - "'2.6.15-446b02c' not in command_result.stdout"
 
   - name: Upgraded HAP version reuslt
     debug:

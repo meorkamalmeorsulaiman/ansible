@@ -191,3 +191,37 @@ kamal@TS-Kamal:~/github/ansible$
 - You can bypass using `ignore_errors` or `force handlers`
 - If use `ignore_errors: yes`, the playbook continue, even after processing the fialing task
 - If use `force_handlers`, if failed the handlers will continue to run. Even if a failing task was encounter
+- You can use `failed_when` you want to specify task failure - ansible consider that a task success eventhough it is a failed command
+- Example, below `echo hello world` and will stop if the `world` string exist
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/failedWhen.yml --ask-pass 
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [demonstrating failed_when] ***********************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [run a script] ************************************************************************************************************************************************************************
+fatal: [hap02.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": ["echo", "hello", "world"], "delta": "0:00:00.001662", "end": "2023-09-10 16:37:25.750929", "failed_when_result": true, "msg": "", "rc": 0, "start": "2023-09-10 16:37:25.749267", "stderr": "", "stderr_lines": [], "stdout": "hello world", "stdout_lines": ["hello world"]}
+...ignoring
+fatal: [hap01.lab.rumah.lan]: FAILED! => {"changed": true, "cmd": ["echo", "hello", "world"], "delta": "0:00:00.001598", "end": "2023-09-10 16:37:26.338807", "failed_when_result": true, "msg": "", "rc": 0, "start": "2023-09-10 16:37:26.337209", "stderr": "", "stderr_lines": [], "stdout": "hello world", "stdout_lines": ["hello world"]}
+...ignoring
+
+TASK [see if we get here] ******************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "msg": "second task executed"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "msg": "second task executed"
+}
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+hap02.lab.rumah.lan        : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+
+kamal@TS-Kamal:~/github/ansible$ 
+```

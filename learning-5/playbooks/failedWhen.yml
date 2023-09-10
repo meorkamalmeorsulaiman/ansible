@@ -1,0 +1,13 @@
+---
+- name: demonstrating failed_when
+  hosts: hap
+  tasks:
+  - name: run a script
+    command: echo hello world
+    ignore_errors: true
+    register: command_result
+    failed_when: "'world' in command_result.stdout"
+
+  - name: see if we get here
+    debug:
+     msg: second task executed

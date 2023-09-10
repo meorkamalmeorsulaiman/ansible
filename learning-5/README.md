@@ -263,3 +263,42 @@ PLAY RECAP *********************************************************************
 hap01.lab.rumah.lan        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
 hap02.lab.rumah.lan        : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
 ```
+
+## Manipulate change status
+
+- In ansible, the `changed` status are those change something or it also not changing something on the mange hosts
+- Example, from the previous playbook. The command `echo` doesn't changed anything but the status state's `changed=1`
+- At some point, you may need to manipulate the status so that it doesn't introduce confusion
+- You can use `changed_when` in the task
+- Example below disable `changed` status because it only run a `date` command
+- Execute the playbook using `ansible-playbook learning-5/playbooks/disableChangeStatus.yml --ask-pass`
+
+```bash
+kamal@TS-Kamal:~/github/ansible$ ansible-playbook learning-5/playbooks/disableChangeStatus.yml --ask-pass 
+SSH password: 
+BECOME password[defaults to SSH password]: 
+
+PLAY [demonstrate changed status] **********************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [check local time] ********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan]
+ok: [hap02.lab.rumah.lan]
+
+TASK [print local time] ********************************************************************************************************************************************************************
+ok: [hap01.lab.rumah.lan] => {
+    "command_result.stdout": "Sun 10 Sep 16:55:39 +08 2023"
+}
+ok: [hap02.lab.rumah.lan] => {
+    "command_result.stdout": "Sun 10 Sep 16:55:38 +08 2023"
+}
+
+PLAY RECAP *********************************************************************************************************************************************************************************
+hap01.lab.rumah.lan        : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+hap02.lab.rumah.lan        : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+kamal@TS-Kamal:~/github/ansible$ 
+```

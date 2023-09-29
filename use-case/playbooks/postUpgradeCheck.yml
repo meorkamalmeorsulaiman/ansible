@@ -1,0 +1,13 @@
+---
+- name: HAProxy Upgrades - Post-Check
+  hosts: hapnodns01
+  tasks:
+  - name: Check if VIP is alive in master node and accessible
+    wait_for:
+      host: 192.168.100.223
+      port: 8081
+      state: started
+      delay: 0
+      timeout: 1
+
+  

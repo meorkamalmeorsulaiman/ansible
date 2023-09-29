@@ -6,8 +6,12 @@ hap02.lab.rumah.lan
 192.168.100.221
 192.168.100.222
 
+[hapnodns01]
+192.168.100.221
+
 [hap01]
 hap01.lab.rumah.lan
 
 [hap02]
 hap02.lab.rumah.lan
+

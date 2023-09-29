@@ -1,0 +1,13 @@
+---
+- name: Deploy HAProxy
+  hosts: hapnodns
+  vars_files:
+    - "vars/app1.yml"
+  tasks:
+  - name: Deploy HAP Configuration file
+    template:
+      src: ../templates/haproxy.cfg.j2
+      dest: /tmp/haproxy.cfg
+
+
+    

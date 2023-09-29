@@ -1,0 +1,13 @@
+---
+- name: HAProxy Upgrades - Post-Certificate Check
+  hosts: hapnodns01
+  tasks:
+  - name: Get certificate information
+    shell: echo | openssl s_client -showcerts -connect gnupg.org:443 2>/dev/null | openssl x509 -noout -subject -dates
+    register: result
+    changed_when: false
+
+  - name: Print the certificate
+    debug:
+      var: result.stdout_lines
+  

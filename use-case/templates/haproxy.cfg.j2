@@ -1,0 +1,28 @@
+###############
+Default
+###############
+defaults
+        mode tcp
+        timeout client 10s
+        timeout connect 5s
+        timeout server 10s
+        timeout http-request 10s
+        log 127.0.0.1:514 local0
+        option tcplog
+
+
+##############
+Frontend
+##############
+
+frontend {{ frontend }}
+    bind 0.0.0.0:8080
+    default_backend {{ backend }}
+
+##############
+Backend
+##############
+backend {{ backend }}
+    server {{ backend_server_1 }} {{ backend_server_1 }}:3000 
+    server {{ backend_server_3 }} {{ backend_server_3 }}:3000 
+    server {{ backend_server_3 }} {{ backend_server_3 }}:3000

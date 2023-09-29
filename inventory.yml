@@ -15,3 +15,6 @@ hap01.lab.rumah.lan
 [hap02]
 hap02.lab.rumah.lan
 
+[app1]
+192.168.100.221
+192.168.100.222

@@ -1,5 +1,5 @@
 ###############
-Default
+#Default
 ###############
 defaults
         mode tcp
@@ -11,18 +11,19 @@ defaults
         option tcplog
 
 
-##############
-Frontend
-##############
+{% for web in webapp %}
+#######################
+#Frontend {{ web.frontend_name|e }}
+#######################
+frontend {{ web.frontend_name|e }}
+    bind 0.0.0.0:{{ web.frontend_port|e }}
+    default_backend {{ web.backend_name|e }}
+#######################
+#Backend {{ web.backend_name|e }}
+#######################
+backend {{ web.backend_name|e }}
+{% for backendServers in web.backend_servers %}
+    server {{ backendServers.server }} {{ backendServers.server}}:{{web.backend_port}}
+{% endfor %}
 
-frontend {{ frontend }}
-    bind 0.0.0.0:8080
-    default_backend {{ backend }}
-
-##############
-Backend
-##############
-backend {{ backend }}
-    server {{ backend_server_1 }} {{ backend_server_1 }}:3000 
-    server {{ backend_server_3 }} {{ backend_server_3 }}:3000 
-    server {{ backend_server_3 }} {{ backend_server_3 }}:3000
+{% endfor %}

@@ -1,0 +1,30 @@
+###############
+Default
+###############
+defaults
+        mode tcp
+        timeout client 10s
+        timeout connect 5s
+        timeout server 10s
+        timeout http-request 10s
+        log 127.0.0.1:514 local0
+        option tcplog
+
+
+{% for web in webapp %}
+#######################
+#Frontend {{ web.frontend_name|e }}
+#######################
+frontend {{ web.frontend_name|e }}
+    bind 0.0.0.0:{{ web.frontend_port|e }}
+    default_backend {{ web.backend_name|e }}
+
+#######################
+#Backend {{ web.backend_name|e }}
+#######################
+backend {{ web.backend_name|e }}
+{% for backendpool in backend_pool_group_web %}
+    server {{ backendpool.server }} {{ backendpool.server|e }}:{{ web.backend_port|e }}
+{% endfor %}
+
+{% endfor %}

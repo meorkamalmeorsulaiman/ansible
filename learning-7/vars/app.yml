@@ -1,0 +1,10 @@
+webapp:
+  - frontend_name: myFirstFrontEnd
+    backend_name: myFirstBackEnd
+    frontend_port: 8080
+    backend_port: 3000
+
+  - frontend_name: mySecondFrontEnd
+    backend_name: mySecondBackEnd
+    frontend_port: 8081
+    backend_port: 3001

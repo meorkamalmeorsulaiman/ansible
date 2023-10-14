@@ -1,9 +1,10 @@
-- backend_pool_group_web:
+---
+backend_pools_web_uat:
     - server: 192.168.100.210
     - server: 192.168.100.211
     - server: 192.168.100.212
 
-- backend_pool_group_app:
-    - server: 192.168.100.213
-    - server: 192.168.100.214
-    - server: 192.168.100.215
+backend_pools_web_sit:
+    - server: 192.168.100.210
+    - server: 192.168.100.211
+    - server: 192.168.100.212

@@ -13,17 +13,16 @@ defaults
 
 {% for web in webapp %}
 #######################
-#Frontend {{ web.frontend_name|e }}
+#Frontend {{ web.frontend_name|e }}-{{ web.environment|e }}
 #######################
 frontend {{ web.frontend_name|e }}
     bind 0.0.0.0:{{ web.frontend_port|e }}
-    default_backend {{ web.backend_name|e }}
+    default_backend {{ web.backend_name|e }}-{{ web.environment|e }}
 #######################
-#Backend {{ web.backend_name|e }}
+#Backend {{ web.backend_name|e }}-{{ web.environment|e }}
 #######################
-backend {{ web.backend_name|e }}
-{% for backendServers in web.backend_servers %}
-    server {{ backendServers.server }} {{ backendServers.server}}:{{web.backend_port}}
+backend {{ web.backend_name|e }}-{{ web.environment|e }}
+{% for backendPools in {{ web.backend_pool_name|e }} %}
 {% endfor %}
 
 {% endfor %}

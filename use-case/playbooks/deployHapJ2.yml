@@ -2,7 +2,8 @@
 - name: HAProxy Upgrades - Pre-Check
   hosts: hapnodns
   vars_files:
-    - "../vars/app1.yml"
+    - "../vars/app.yml"
+    - "../vars/backendServers.yml"
   tasks:
   - name: Deploy HAP Configuration file
     template:

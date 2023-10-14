@@ -1,0 +1,15 @@
+---
+webapp:
+  - frontend_name: myUatFrontEnd
+    backend_name: myUatBackEnd
+    frontend_port: 8080
+    backend_port: 3000 
+    environment: uat
+    backend_pool_name: backend_pools_web_uat
+    
+  - frontend_name: mySitdFrontEnd
+    backend_name: mySitBackEnd
+    frontend_port: 8081
+    backend_port: 3001
+    environment: sit
+    backend_pool_name: backend_pools_web_sit
